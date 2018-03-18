@@ -1,7 +1,8 @@
-package com.artem.myecommerce
+package com.artem.myecommerce.Activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.artem.myecommerce.R
 
 class MainActivity : AppCompatActivity() {
 

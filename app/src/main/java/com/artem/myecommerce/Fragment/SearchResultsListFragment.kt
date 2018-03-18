@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-class ViewItemFragment : Fragment() {
+class SearchResultsListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater!!.inflate(R.layout.fragment_view_item, null)
+        var view = inflater!!.inflate(R.layout.fragment_search_results_list, null)
 
         return view
     }
