@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 
 class SignUpFragment : Fragment(){
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater!!.inflate(R.layout.fragment_sign_up, null)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        var view = inflater.inflate(R.layout.fragment_sign_up, null)
 
         return view
     }

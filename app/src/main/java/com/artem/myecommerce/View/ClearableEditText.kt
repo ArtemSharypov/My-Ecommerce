@@ -1,4 +1,4 @@
-package com.artem.myecommerce.View
+package com.artem.myecommerce.view
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -32,7 +32,7 @@ class ClearableEditText : AppCompatEditText, View.OnTouchListener, View.OnFocusC
 
     private fun init(context: Context) {
         val drawable = ContextCompat.getDrawable(context, R.drawable.ic_action_cancel)
-        val wrappedDrawable = DrawableCompat.wrap(drawable)
+        val wrappedDrawable = DrawableCompat.wrap(drawable!!)
 
         DrawableCompat.setTint(wrappedDrawable, currentHintTextColor)
         clearTextIcon = wrappedDrawable

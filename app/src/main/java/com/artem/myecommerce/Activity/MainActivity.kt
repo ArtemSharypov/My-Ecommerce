@@ -1,4 +1,4 @@
-package com.artem.myecommerce.Activity
+package com.artem.myecommerce.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

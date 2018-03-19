@@ -52,10 +52,11 @@
         android:id="@+id/row_cart_item_et_quantity_input"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="31dp"
         android:ems="10"
         android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@+id/row_cart_item_tv_quantity"
-        tools:layout_editor_absoluteX="224dp" />
+        app:layout_constraintEnd_toStartOf="@+id/row_cart_item_tv_total_display"
+        app:layout_constraintTop_toBottomOf="@+id/row_cart_item_tv_quantity" />
 
     <TextView
         android:id="@+id/row_cart_item_tv_quantity"
@@ -78,22 +79,22 @@
 
     <TextView
         android:id="@+id/row_cart_item_tv_price_display"
-        android:layout_width="wrap_content"
+        android:layout_width="36dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="72dp"
         android:layout_marginTop="16dp"
         android:text="$0.00"
-        app:layout_constraintEnd_toStartOf="@+id/row_cart_item_et_quantity_input"
+        app:layout_constraintStart_toEndOf="@+id/row_cart_item_iv_product_image"
         app:layout_constraintTop_toBottomOf="@+id/row_cart_item_tv_price_title" />
 
     <TextView
         android:id="@+id/row_cart_item_tv_total_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginEnd="44dp"
         android:layout_marginTop="16dp"
         android:text="$0.00"
-        app:layout_constraintStart_toEndOf="@+id/row_cart_item_et_quantity_input"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/row_cart_item_tv_item_total" />
 
 </android.support.constraint.ConstraintLayout>
