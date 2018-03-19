@@ -32,7 +32,7 @@ class ProductDisplayFragment : Fragment() {
         var horizontalLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         view.fragment_product_display_rv_thumbnails.layoutManager = horizontalLayoutManager
 
-        thumbnailsAdapter = ThumbnailsAdapter(currentProduct.thumbnailImages)
+        thumbnailsAdapter = ThumbnailsAdapter(currentProduct.thumbnailImages, context!!)
         view.fragment_product_display_rv_thumbnails.adapter = thumbnailsAdapter
 
         return view

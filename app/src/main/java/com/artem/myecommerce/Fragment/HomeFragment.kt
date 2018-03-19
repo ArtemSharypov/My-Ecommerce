@@ -32,10 +32,10 @@ class HomeFragment : Fragment() {
 
         //todo populate all of the lists for the adapters
 
-        popularAdapter = HomeProductRecyclerAdapter(popularItemsList)
-        newAdapter = HomeProductRecyclerAdapter(newItemsList)
-        trendingAdapter = HomeProductRecyclerAdapter(trendingItemsList)
-        highlyRatedAdapter = HomeProductRecyclerAdapter(highlyRatedItemsList)
+        popularAdapter = HomeProductRecyclerAdapter(popularItemsList, context!!)
+        newAdapter = HomeProductRecyclerAdapter(newItemsList, context!!)
+        trendingAdapter = HomeProductRecyclerAdapter(trendingItemsList, context!!)
+        highlyRatedAdapter = HomeProductRecyclerAdapter(highlyRatedItemsList, context!!)
 
         view.fragment_home_rv_popular.adapter = popularAdapter
         view.fragment_home_rv_new.adapter = newAdapter

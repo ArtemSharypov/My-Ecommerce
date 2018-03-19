@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.artem.myecommerce.R
+import kotlinx.android.synthetic.main.row_page_number.view.*
 
 class PageNumbersAdapter(var pageNumbersList: ArrayList<String>) : RecyclerView.Adapter<PageNumbersAdapter.ViewHolder>(){
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
         fun bind(pageNumber: String) {
-            //todo set all the necessary parts of the holder here
+            view.row_page_number_tv_page.text = pageNumber
         }
     }
 
