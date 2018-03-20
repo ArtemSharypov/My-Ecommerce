@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.artem.myecommerce.R
 import com.artem.myecommerce.domain.ReviewItem
+import kotlinx.android.synthetic.main.row_review.view.*
 
 class ReviewsListAdapter(var context: Context, var reviewsList: ArrayList<ReviewItem>) : BaseAdapter() {
     private var inflater = LayoutInflater.from(context)
@@ -21,7 +22,12 @@ class ReviewsListAdapter(var context: Context, var reviewsList: ArrayList<Review
         }
 
         var reviewItem = reviewsList[position]
-        //todo setup onClickListeners & setting any necessary data here
+
+        view.row_review_tv_reviewers_name.text = reviewItem.reviewersName
+        view.row_review_tv_date_created.text = reviewItem.date.toString()
+        view.row_review_tv_review_title.text = reviewItem.reviewTitle
+        view.row_review_tv_num_stars.text = reviewItem.rating.toString()
+        view.row_review_tv_review_description.text = reviewItem.reviewDescription
 
         return view
     }

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.artem.myecommerce.R
 import com.artem.myecommerce.adapter.CartItemsListAdapter
 import com.artem.myecommerce.domain.CartItem
+import kotlinx.android.synthetic.main.fragment_cart.*
 import kotlinx.android.synthetic.main.fragment_cart.view.*
 
 class CartFragment : Fragment() {
@@ -22,6 +23,20 @@ class CartFragment : Fragment() {
         adapter = CartItemsListAdapter(context!!, cartItemsList)
         view.fragment_cart_lv_items.adapter = adapter
 
+        fragment_cart_lv_items.setOnClickListener {
+            switchToCheckout()
+        }
+
+        calculateTotals()
+
         return view
+    }
+
+    private fun calculateTotals(){
+
+    }
+
+    private fun switchToCheckout() {
+
     }
 }

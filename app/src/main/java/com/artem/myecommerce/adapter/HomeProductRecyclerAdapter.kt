@@ -21,6 +21,10 @@ class HomeProductRecyclerAdapter(var productItemsList: ArrayList<ProductItem>, v
         var inflater = LayoutInflater.from(parent?.context)
         var view = inflater?.inflate(R.layout.row_home_product, parent, false)
 
+        view?.setOnClickListener {
+            //todo switch to the CurrentProductFragment with all productItems in the adapter, and pass which one is currently selected (position)
+        }
+
         return ViewHolder(view!!, context)
     }
 

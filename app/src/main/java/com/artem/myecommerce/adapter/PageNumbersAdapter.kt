@@ -11,6 +11,9 @@ class PageNumbersAdapter(var pageNumbersList: ArrayList<String>) : RecyclerView.
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
         fun bind(pageNumber: String) {
             view.row_page_number_tv_page.text = pageNumber
+            view.setOnClickListener {
+                //todo onClick switch to the appropriate page via calling the fragment
+            }
         }
     }
 

@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.artem.myecommerce.R
 import com.artem.myecommerce.domain.CartItem
+import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.row_order_item.view.*
 
 class OrderItemsListAdapter (var context: Context, var cartItemsList: ArrayList<CartItem>) : BaseAdapter() {
 
@@ -22,7 +24,13 @@ class OrderItemsListAdapter (var context: Context, var cartItemsList: ArrayList<
         }
 
         var cartItem = cartItemsList[position]
-        //todo setup onClickListeners & setting any necessary data here
+
+        view.row_order_item_tv_product_name.text = cartItem.productName
+        view.row_order_item_tv_price_display.text = "$" + cartItem.price
+        view.row_order_item_tv_quantity_amount.text = cartItem.quantity.toString()
+        view.row_order_item_tv_total_display.text = "$" + cartItem.price * cartItem.quantity
+
+        Glide.with(context).load(cartItem.mainImageURL).into(view.row_order_item_iv_product_image)
 
         return view
     }

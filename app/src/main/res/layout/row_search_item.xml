@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/row_cart_item_iv_product_image"
+        android:id="@+id/row_search_item_iv_product_image"
         android:layout_width="125dp"
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
@@ -17,7 +17,7 @@
         app:srcCompat="@color/colorPrimaryDark" />
 
     <TextView
-        android:id="@+id/row_cart_item_tv_product_name"
+        android:id="@+id/row_search_item_tv_product_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -25,7 +25,7 @@
         android:layout_marginTop="24dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/row_cart_item_iv_product_image"
+        app:layout_constraintStart_toEndOf="@+id/row_search_item_iv_product_image"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toEndOf="@+id/row_search_item_iv_stars"
-        app:layout_constraintTop_toBottomOf="@+id/row_cart_item_tv_product_name" />
+        app:layout_constraintTop_toBottomOf="@+id/row_search_item_tv_product_name" />
 
     <ImageView
         android:id="@+id/row_search_item_iv_stars"
@@ -42,8 +42,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@+id/row_cart_item_iv_product_image"
-        app:layout_constraintTop_toBottomOf="@+id/row_cart_item_tv_product_name"
+        app:layout_constraintStart_toEndOf="@+id/row_search_item_iv_product_image"
+        app:layout_constraintTop_toBottomOf="@+id/row_search_item_tv_product_name"
         app:srcCompat="@android:drawable/btn_star_big_on" />
 
     <TextView
@@ -53,5 +53,5 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/row_cart_item_tv_product_name" />
+        app:layout_constraintTop_toBottomOf="@+id/row_search_item_tv_product_name" />
 </android.support.constraint.ConstraintLayout>
