@@ -7,10 +7,9 @@ import com.artem.myecommerce.ProductDisplayFragment
 import com.artem.myecommerce.domain.ProductItem
 
 
-class CurrentProductVPAdapter(fm: FragmentManager, var products: ArrayList<ProductItem>) : FragmentPagerAdapter(fm){
+class CurrentProductVPAdapter(fm: FragmentManager, var products: ArrayList<ProductItem>, var currPos: Int) : FragmentPagerAdapter(fm){
     override fun getItem(position: Int): Fragment {
-        //todo create a factory method for fragment and pass in products[position]
-        return ProductDisplayFragment()
+        return ProductDisplayFragment.newInstance(products[currPos])
     }
 
     override fun getCount(): Int {

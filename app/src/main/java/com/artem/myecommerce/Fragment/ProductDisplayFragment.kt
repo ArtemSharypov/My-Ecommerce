@@ -13,7 +13,9 @@ import com.artem.myecommerce.adapter.ThumbnailsAdapter
 import com.artem.myecommerce.domain.ProductItem
 import com.artem.myecommerce.domain.ReviewItem
 import com.artem.myecommerce.domain.ThumbnailImageItem
+import com.artem.myecommerce.utility.CalculatorForTotals
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.fragment_product_display.*
 import kotlinx.android.synthetic.main.fragment_product_display.view.*
 
 class ProductDisplayFragment : Fragment() {
@@ -21,12 +23,32 @@ class ProductDisplayFragment : Fragment() {
     private lateinit var thumbnailsAdapter: ThumbnailsAdapter
     private var reviewsList = ArrayList<ReviewItem>()
     private lateinit var currentProduct: ProductItem
+    private var calculator = CalculatorForTotals()
+
+    companion object {
+        private val PRODUCT_ITEM = "productItem"
+
+        fun newInstance(productItem: ProductItem) : ProductDisplayFragment {
+            val args = Bundle()
+            args.putParcelable(PRODUCT_ITEM, productItem)
+
+            val productDisplayFragment = ProductDisplayFragment()
+            productDisplayFragment.arguments = args
+
+            return productDisplayFragment
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_product_display, null)
+        val args = arguments
+        var horizontalLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        //todo need to have a proper product item
-        currentProduct = ProductItem("", ArrayList<ThumbnailImageItem>(), "", 0, 0, ArrayList<ReviewItem>(), "")
+        if(args != null) {
+            currentProduct = args.getParcelable(PRODUCT_ITEM)
+        } else {
+            currentProduct = ProductItem("", ArrayList<ThumbnailImageItem>(), "", 0, 0, ArrayList<ReviewItem>(), "")
+        }
 
         view.fragment_product_display_tv_product_name.text = currentProduct.productName
         view.fragment_product_display_tv_review_rating.text = currentProduct.reviewRating.toString()
@@ -37,21 +59,22 @@ class ProductDisplayFragment : Fragment() {
 
         //todo add way to populate reviewsList
         reviewsListAdapter = ReviewsListAdapter(context!!, reviewsList)
+
+        thumbnailsAdapter = ThumbnailsAdapter(currentProduct.thumbnailImages, context!!) {
+            position -> imageClickAtPos(position)
+        }
+
         view.fragment_product_display_lv_reviews.adapter = reviewsListAdapter
-
-        var horizontalLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view.fragment_product_display_rv_thumbnails.layoutManager = horizontalLayoutManager
-
-        thumbnailsAdapter = ThumbnailsAdapter(currentProduct.thumbnailImages, context!!)
         view.fragment_product_display_rv_thumbnails.adapter = thumbnailsAdapter
-
         view.fragment_product_display_btn_add_to_cart.setOnClickListener {
             addToCart()
         }
 
+        //Updates the Subtotal displayed as a User changes the Quantity amount
         view.fragment_product_display_et_quantity.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(text: Editable?) {
-                var subtotal = calculateSubtotal(currentProduct.price, text.toString().toInt())
+                var subtotal = calculator.calculateSubtotal(currentProduct.price, text.toString().toInt())
                 view.fragment_product_display_tv_subtotal_amount.text = "$" + subtotal.toString()
             }
 
@@ -64,16 +87,12 @@ class ProductDisplayFragment : Fragment() {
     }
 
     private fun addToCart() {
-
+        //todo add a way to add the item to a cart
     }
 
-    private fun calculateSubtotal(price: Long, quantity: Int) : Long {
-        var total: Long = 0
-
-        if(quantity != null && quantity >= 0) {
-            total = price * quantity
-        }
-
-        return total
+    //Switches the main ImageView display to the Image that was clicked
+    private fun imageClickAtPos(position: Int) {
+        var imageClickedURL = currentProduct.thumbnailImages[position]
+        Glide.with(context!!).load(imageClickedURL).into(fragment_product_display_iv_displayed_image)
     }
 }

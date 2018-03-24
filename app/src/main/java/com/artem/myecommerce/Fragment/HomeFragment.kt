@@ -1,17 +1,19 @@
 package com.artem.myecommerce
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.artem.myecommerce.`interface`.ReplaceFragmentInterface
 import com.artem.myecommerce.adapter.HomeProductRecyclerAdapter
 import com.artem.myecommerce.domain.ProductItem
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment() {
-
+    private var replaceFragmentCallback: ReplaceFragmentInterface? = null
     private lateinit var popularAdapter: HomeProductRecyclerAdapter
     private lateinit var newAdapter: HomeProductRecyclerAdapter
     private lateinit var trendingAdapter: HomeProductRecyclerAdapter
@@ -23,19 +25,33 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_home, null)
-        var horizontalLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        var horizontalLayoutManagerPopular = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        var horizontalLayoutManagerNew = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        var horizontalLayoutManagerTrending = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        var horizontalLayoutManagerRated = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
-        view.fragment_home_rv_popular.layoutManager = horizontalLayoutManager
-        view.fragment_home_rv_new.layoutManager = horizontalLayoutManager
-        view.fragment_home_rv_trending.layoutManager = horizontalLayoutManager
-        view.fragment_home_rv_highly_rated.layoutManager = horizontalLayoutManager
+        view.fragment_home_rv_popular.layoutManager = horizontalLayoutManagerPopular
+        view.fragment_home_rv_new.layoutManager = horizontalLayoutManagerNew
+        view.fragment_home_rv_trending.layoutManager = horizontalLayoutManagerTrending
+        view.fragment_home_rv_highly_rated.layoutManager = horizontalLayoutManagerRated
 
         //todo populate all of the lists for the adapters
 
-        popularAdapter = HomeProductRecyclerAdapter(popularItemsList, context!!)
-        newAdapter = HomeProductRecyclerAdapter(newItemsList, context!!)
-        trendingAdapter = HomeProductRecyclerAdapter(trendingItemsList, context!!)
-        highlyRatedAdapter = HomeProductRecyclerAdapter(highlyRatedItemsList, context!!)
+        popularAdapter = HomeProductRecyclerAdapter(popularItemsList, context!!) { position, listOfProductItems ->
+            productItemClicked(position, listOfProductItems)
+        }
+
+        newAdapter = HomeProductRecyclerAdapter(newItemsList, context!!) { position, listOfProductItems ->
+            productItemClicked(position, listOfProductItems)
+        }
+
+        trendingAdapter = HomeProductRecyclerAdapter(trendingItemsList, context!!) { position, listOfProductItems ->
+            productItemClicked(position, listOfProductItems)
+        }
+
+        highlyRatedAdapter = HomeProductRecyclerAdapter(highlyRatedItemsList, context!!) { position, listOfProductItems ->
+            productItemClicked(position, listOfProductItems)
+        }
 
         view.fragment_home_rv_popular.adapter = popularAdapter
         view.fragment_home_rv_new.adapter = newAdapter
@@ -43,5 +59,20 @@ class HomeFragment : Fragment() {
         view.fragment_home_rv_highly_rated.adapter = highlyRatedAdapter
 
         return view
+    }
+
+    private fun productItemClicked(positionInList: Int, listOfProducts: ArrayList<ProductItem>) {
+        var currentProductFragment = CurrentProductFragment.newInstance(positionInList, listOfProducts)
+        replaceFragmentCallback?.replaceWithFragment(currentProductFragment)
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        try {
+            replaceFragmentCallback = context as ReplaceFragmentInterface
+        } catch (e: ClassCastException) {
+            throw ClassCastException(context?.toString() + " must implement the necessary Interface")
+        }
     }
 }

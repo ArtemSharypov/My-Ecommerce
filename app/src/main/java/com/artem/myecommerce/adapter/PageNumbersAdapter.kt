@@ -7,21 +7,23 @@ import android.view.ViewGroup
 import com.artem.myecommerce.R
 import kotlinx.android.synthetic.main.row_page_number.view.*
 
-class PageNumbersAdapter(var pageNumbersList: ArrayList<String>) : RecyclerView.Adapter<PageNumbersAdapter.ViewHolder>(){
+class PageNumbersAdapter(var pageNumbersList: ArrayList<String>, var pageClick: (Int) -> (Unit)) : RecyclerView.Adapter<PageNumbersAdapter.ViewHolder>(){
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
         fun bind(pageNumber: String) {
             view.row_page_number_tv_page.text = pageNumber
-            view.setOnClickListener {
-                //todo onClick switch to the appropriate page via calling the fragment
-            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         var inflater = LayoutInflater.from(parent?.context)
         var view = inflater?.inflate(R.layout.row_page_number, parent, false)
+        var holder = ViewHolder(view!!)
 
-        return ViewHolder(view!!)
+        view.setOnClickListener {
+            pageClick(holder.adapterPosition)
+        }
+
+        return holder
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {

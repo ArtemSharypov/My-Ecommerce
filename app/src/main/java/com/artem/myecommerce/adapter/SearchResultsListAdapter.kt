@@ -10,7 +10,7 @@ import com.artem.myecommerce.domain.ProductItem
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.row_search_item.view.*
 
-class SearchResultsListAdapter(var context: Context, var productItemsList: ArrayList<ProductItem>) : BaseAdapter() {
+class SearchResultsListAdapter(var context: Context, var productItemsList: ArrayList<ProductItem>, var productClicked: (Int, ArrayList<ProductItem>) -> Unit) : BaseAdapter() {
     private var inflater = LayoutInflater.from(context)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -23,7 +23,7 @@ class SearchResultsListAdapter(var context: Context, var productItemsList: Array
         }
 
         view.setOnClickListener {
-            //todo switch to the currentProductFragment with ProductDisplayFragment showing it
+            productClicked(position, productItemsList)
         }
 
         var productItem = productItemsList[position]
