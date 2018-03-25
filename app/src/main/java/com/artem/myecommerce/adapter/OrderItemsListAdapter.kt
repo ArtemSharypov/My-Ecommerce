@@ -25,12 +25,12 @@ class OrderItemsListAdapter (var context: Context, var cartItemsList: ArrayList<
 
         var cartItem = cartItemsList[position]
 
-        view.row_order_item_tv_product_name.text = cartItem.productName
-        view.row_order_item_tv_price_display.text = "$" + cartItem.price
+        view.row_order_item_tv_product_name.text = cartItem.productItem.productName
+        view.row_order_item_tv_price_display.text = "$" + cartItem.productItem.price
         view.row_order_item_tv_quantity_amount.text = cartItem.quantity.toString()
-        view.row_order_item_tv_total_display.text = "$" + cartItem.price * cartItem.quantity
+        view.row_order_item_tv_total_display.text = "$" + cartItem.productItem.price * cartItem.quantity
 
-        Glide.with(context).load(cartItem.mainImageURL).into(view.row_order_item_iv_product_image)
+        Glide.with(context).load(cartItem.productItem.mainImageURL).into(view.row_order_item_iv_product_image)
 
         return view
     }

@@ -6,13 +6,19 @@ import android.support.v7.app.AppCompatActivity
 import android.view.KeyEvent
 import android.view.View
 import com.artem.myecommerce.*
+import com.artem.myecommerce.`interface`.CartDetailsInterface
 import com.artem.myecommerce.`interface`.ReplaceFragmentInterface
 import com.artem.myecommerce.`interface`.SignUpAndLoginInterface
+import com.shopify.buy3.Storefront
+import com.shopify.graphql.support.ID
 import kotlinx.android.synthetic.main.activity_main.*
 import layout.CartFragment
 
-class MainActivity : AppCompatActivity(), ReplaceFragmentInterface, SignUpAndLoginInterface {
+class MainActivity : AppCompatActivity(), ReplaceFragmentInterface, SignUpAndLoginInterface, CartDetailsInterface {
     private var signedIn = false
+    private var accessToken = ""
+    private var cartId: ID? = null
+    private var checkout: Storefront.Checkout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,22 +64,42 @@ class MainActivity : AppCompatActivity(), ReplaceFragmentInterface, SignUpAndLog
                 .commit()
     }
 
+    override fun getCartId(): ID? {
+        return cartId
+    }
+
+    override fun setCartId(id: ID) {
+        this.cartId = id
+    }
+
+    override fun getCheckout(): Storefront.Checkout? {
+        return checkout
+    }
+
+    override fun setCheckout(checkout: Storefront.Checkout) {
+        this.checkout = checkout
+    }
+
     //Removes the last 2 fragments
     override fun finishedSignUp() {
-        signedIn = true
-        updateSignInAndOutButton()
-
         //todo find a better way to handle the signup navigation back
-        onBackPressed()
         onBackPressed()
     }
 
-    override fun finishedLogin() {
+    override fun finishedLogin(accessToken: String) {
         signedIn = true
         updateSignInAndOutButton()
 
         //todo find a better way to handle the login navigation back
         onBackPressed()
+    }
+
+    override fun getCurrAccessToken(): String {
+        return accessToken
+    }
+
+    override fun updateAccessToken(accessToken: String) {
+        this.accessToken = accessToken
     }
 
     //Changes the Sign In / Sign Out Button to the updated text, depending on if a user is signed in or out

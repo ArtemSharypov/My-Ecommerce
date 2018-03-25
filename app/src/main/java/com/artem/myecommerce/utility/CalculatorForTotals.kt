@@ -6,8 +6,8 @@ class CalculatorForTotals {
     private val PST_PERCENT = 8
     private val GST_PERCENT = 5
 
-    fun calculatePST(subtotal: Long, shipping: Long) : Long {
-        var pstAmount: Long = 0
+    fun calculatePST(subtotal: Double, shipping: Double) : Double {
+        var pstAmount = 0.0
         var totalAmount = subtotal + shipping
 
         if(totalAmount > 0) {
@@ -17,8 +17,8 @@ class CalculatorForTotals {
         return pstAmount
     }
 
-    fun calculatePST(subtotal: Long) : Long {
-        var pstAmount: Long = 0
+    fun calculatePST(subtotal: Double) : Double {
+        var pstAmount = 0.0
         var totalAmount = subtotal
 
         if(totalAmount > 0) {
@@ -28,8 +28,8 @@ class CalculatorForTotals {
         return pstAmount
     }
 
-    fun calculateGST(subtotal: Long, shipping: Long) : Long {
-        var gstAmount: Long = 0
+    fun calculateGST(subtotal: Double, shipping: Double) : Double {
+        var gstAmount = 0.0
         var totalAmount = subtotal + shipping
 
         if(totalAmount > 0) {
@@ -39,8 +39,8 @@ class CalculatorForTotals {
         return gstAmount
     }
 
-    fun calculateGST(subtotal: Long) : Long {
-        var gstAmount: Long = 0
+    fun calculateGST(subtotal: Double) : Double {
+        var gstAmount= 0.0
         var totalAmount = subtotal
 
         if(totalAmount > 0) {
@@ -50,18 +50,18 @@ class CalculatorForTotals {
         return gstAmount
     }
 
-    fun calculateSubtotalCartItems(orderItemsList: ArrayList<CartItem>) : Long {
-        var subtotal: Long = 0
+    fun calculateSubtotalCartItems(orderItemsList: ArrayList<CartItem>) : Double {
+        var subtotal = 0.0
 
         orderItemsList.forEach {
-            subtotal += (it.price * it.quantity)
+            subtotal += (it.productItem.price * it.quantity)
         }
 
         return subtotal
     }
 
-    fun calculateSubtotal(price: Long, quantity: Int) : Long {
-        var total: Long = 0
+    fun calculateSubtotal(price: Double, quantity: Int) : Double {
+        var total = 0.0
 
         if(quantity != null && quantity >= 0) {
             total = price * quantity
@@ -70,13 +70,13 @@ class CalculatorForTotals {
         return total
     }
 
-    fun calculateTotal(pstAmount: Long, gstAmount: Long, subtotal: Long, shipping: Long) : Long{
+    fun calculateTotal(pstAmount: Double, gstAmount: Double, subtotal: Double, shipping: Double) : Double{
         var totalAmount = pstAmount + gstAmount + subtotal + shipping
 
         return totalAmount
     }
 
-    fun calculateTotal(pstAmount: Long, gstAmount: Long, subtotal: Long) : Long{
+    fun calculateTotal(pstAmount: Double, gstAmount: Double, subtotal: Double) : Double{
         var totalAmount = pstAmount + gstAmount + subtotal
 
         return totalAmount

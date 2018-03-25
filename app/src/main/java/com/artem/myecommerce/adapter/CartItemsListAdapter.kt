@@ -12,7 +12,8 @@ import com.artem.myecommerce.domain.CartItem
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.row_cart_item.view.*
 
-class CartItemsListAdapter (var context: Context, var cartItemsList: ArrayList<CartItem>, var updateTotalsCallback: () -> Unit) : BaseAdapter() {
+class CartItemsListAdapter (var context: Context, var cartItemsList: ArrayList<CartItem>, var updateQuantityCallback: (CartItem, Int) -> Unit,
+                            var removeItemCallback: (Int) -> Unit) : BaseAdapter() {
     private var inflater = LayoutInflater.from(context)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -26,27 +27,27 @@ class CartItemsListAdapter (var context: Context, var cartItemsList: ArrayList<C
 
         var cartItem = cartItemsList[position]
         var totalText = view.row_cart_item_tv_total_display
-        var total = calculateItemSubtotal(cartItem.price, cartItem.quantity)
+        var total = calculateItemSubtotal(cartItem.productItem.price, cartItem.quantity)
 
         totalText.text = total.toString()
-        view.row_search_item_tv_product_name.text = cartItem.productName
-        view.row_cart_item_tv_price_display.text = "$" + cartItem.price
+        view.row_search_item_tv_product_name.text = cartItem.productItem.productName
+        view.row_cart_item_tv_price_display.text = "$" + cartItem.productItem.price
         view.row_cart_item_et_quantity_input.setText(cartItem.quantity.toString())
 
-        Glide.with(context).load(cartItem.mainImageURL).into(view.row_search_item_iv_product_image)
+        Glide.with(context).load(cartItem.productItem.mainImageURL).into(view.row_search_item_iv_product_image)
 
         view.row_cart_item_ib_remove_item.setOnClickListener {
-            removeItemAtPos(position)
+            removeItemCallback(position)
         }
 
         //Updates the totals once a User changes the Quantity of a Item
         view.row_cart_item_et_quantity_input.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(text: Editable?) {
-                var total = calculateItemSubtotal(cartItem.price, text.toString().toInt())
-                cartItem.total = total
+                var total = calculateItemSubtotal(cartItem.productItem.price, text.toString().toInt())
                 totalText.text = "$" + total.toString()
 
-                updateTotalsCallback()
+                var quantity = text.toString().toInt()
+                updateQuantityCallback(cartItem, quantity)
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
@@ -57,16 +58,8 @@ class CartItemsListAdapter (var context: Context, var cartItemsList: ArrayList<C
         return view
     }
 
-    //Removes the CartItem from the List, updates the ListView and the Totals for GST/PST/Subtotal/Total
-    private fun removeItemAtPos(position: Int) {
-        cartItemsList.removeAt(position)
-        notifyDataSetChanged()
-
-        updateTotalsCallback()
-    }
-
-    private fun calculateItemSubtotal(price: Long, quantity: Int) : Long {
-        var total: Long = 0
+    private fun calculateItemSubtotal(price: Double, quantity: Int) : Double {
+        var total = 0.0
 
         if(quantity != null && quantity >= 0) {
             total = price * quantity

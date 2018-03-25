@@ -26,9 +26,7 @@ class CartFragment : Fragment() {
 
         //todo add way to populate cartItemsList
 
-        adapter = CartItemsListAdapter(context!!, cartItemsList) {
-            calculateTotals()
-        }
+        adapter = CartItemsListAdapter(context!!, cartItemsList, {cartItem, pos -> updateQuantityOfItem(cartItem, pos) },  { removeItemAtPos(it) })
         view.fragment_cart_lv_items.adapter = adapter
 
         view.fragment_cart_btn_proceed_checkout.setOnClickListener {
@@ -38,6 +36,27 @@ class CartFragment : Fragment() {
         calculateTotals()
 
         return view
+    }
+
+    private fun updateQuantityOfItem(cartItem: CartItem, quantity: Int) {
+
+        if(quantity >= 0) {
+            cartItem.quantity = quantity
+
+            calculateTotals()
+
+            //todo add the call to update the quantity within the cart
+        }
+    }
+
+    //Removes the CartItem from the List, updates the ListView and the Totals for GST/PST/Subtotal/Total
+    private fun removeItemAtPos(position: Int) {
+        cartItemsList.removeAt(position)
+        adapter.notifyDataSetChanged()
+
+        calculateTotals()
+
+        //todo add the call to remove the item from the cart
     }
 
     //Calculates the Totals based on all of the Items in a Cart, and updates all of the Taxes & Totals for them

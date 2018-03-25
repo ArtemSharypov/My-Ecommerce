@@ -3,21 +3,17 @@ package com.artem.myecommerce.domain
 import android.os.Parcel
 import android.os.Parcelable
 
-class CartItem (var mainImageURL: String, var productName: String, var price: Long, var quantity: Int, var total: Long) : Parcelable {
+class CartItem (var productItem: ProductItem, var quantity: Int, var cartItemId: String) : Parcelable {
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readLong(),
+            parcel.readParcelable(ProductItem::class.java.classLoader),
             parcel.readInt(),
-            parcel.readLong()) {
+            parcel.readString()) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(mainImageURL)
-        parcel.writeString(productName)
-        parcel.writeLong(price)
+        parcel.writeParcelable(productItem, flags)
         parcel.writeInt(quantity)
-        parcel.writeLong(total)
+        parcel.writeString(cartItemId)
     }
 
     override fun describeContents(): Int {
@@ -33,4 +29,5 @@ class CartItem (var mainImageURL: String, var productName: String, var price: Lo
             return arrayOfNulls(size)
         }
     }
+
 }
