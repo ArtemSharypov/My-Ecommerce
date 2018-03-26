@@ -145,13 +145,13 @@ class HomeFragment : Fragment() {
                     highlyRatedAdapter.notifyDataSetChanged()
                 } else {
                     var toastText = "Failed to find items"
-                    Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                    Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(error: GraphError) {
                 var toastText = "Failed to find items, $error"
-                Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
             }
         })
     }

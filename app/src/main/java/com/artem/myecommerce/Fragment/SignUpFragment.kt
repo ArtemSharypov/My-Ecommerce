@@ -95,13 +95,13 @@ class SignUpFragment : Fragment(){
                     activityCallback?.finishedSignUp()
                 } else {
                     var toastText = "Failed to create an account"
-                    Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                    Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(error: GraphError) {
                 var toastText = "Failed to create an account, $error"
-                Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
             }
         })
     }

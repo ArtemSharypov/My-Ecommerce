@@ -13,6 +13,7 @@ import com.artem.myecommerce.`interface`.CartDetailsInterface
 import com.artem.myecommerce.`interface`.ReplaceFragmentInterface
 import com.artem.myecommerce.adapter.OrderItemsListAdapter
 import com.artem.myecommerce.domain.CartItem
+import com.artem.myecommerce.domain.ProductItem
 import com.artem.myecommerce.utility.CalculatorForTotals
 import com.shopify.buy3.*
 import com.shopify.graphql.support.ID
@@ -35,7 +36,8 @@ class OrderFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_order, null)
 
-        //todo add way to populate orderItemsList
+        setupGraphClient()
+        populateCartItemsListFromCheckout()
 
         adapter = OrderItemsListAdapter(context!!, orderItemsList)
         view.fragment_order_lv_order_items.adapter = adapter
@@ -57,10 +59,42 @@ class OrderFragment : Fragment() {
         }
 
         calculateAllTotals()
-        setupGraphClient()
         setupCardClient()
 
         return view
+    }
+
+    //Grabs all of the LineItems from the Checkout and populates it for display
+    private fun populateCartItemsListFromCheckout() {
+        var currCheckout = cartDetailCallback.getCheckout()
+
+        if(currCheckout != null) {
+            val lineItemsEdge = currCheckout.lineItems.edges
+
+            lineItemsEdge.forEach {
+                var currNode = it.node
+                var lineItemId = currNode.id
+                var quantity = currNode.quantity
+                var productTitle = currNode.title
+                var variantId = currNode.variant
+                var customAtts = currNode.customAttributes
+                var mainImageUrl = ""
+                var price = 0.00
+
+                customAtts.forEach {
+                    if(it.key == "mainImageUrl") {
+                        mainImageUrl = it.value
+                    } else if(it.key == "price") {
+                        price = it.value.toDouble()
+                    }
+                }
+
+                var currProductItem = ProductItem(mainImageUrl, ArrayList(), productTitle, price, 0.0, ArrayList(), "", variantId.toString())
+                var currCartItem = CartItem(currProductItem, quantity, lineItemId.toString())
+
+                orderItemsList.add(currCartItem)
+            }
+        }
     }
 
     //Calculates all of the totals based on all of the Items in the current Order
@@ -100,7 +134,7 @@ class OrderFragment : Fragment() {
 
             override fun onFailure(error: IOException) {
                 var toastText = "Error with the Credit Card Entered, $error"
-                Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
             }
         })
 
@@ -144,13 +178,13 @@ class OrderFragment : Fragment() {
                     }
                 } else {
                     var toastText = "Failed to create your order"
-                    Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                    Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(error: GraphError) {
                 var toastText = "Failed with creating your Order, $error"
-                Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
             }
         })
     }
@@ -181,11 +215,12 @@ class OrderFragment : Fragment() {
                     var checkout = payment.checkout
                     var orderId = checkout.order.id.toString()
 
+                    cartDetailCallback.setCheckout(null)
                     //todo add something to deal with when a order has successfully been placed
                 } else {
                     var error = payment.errorMessage
                     var toastText = "Failed with the payment on checkout, $error"
-                    Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                    Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
                 }
             }
 

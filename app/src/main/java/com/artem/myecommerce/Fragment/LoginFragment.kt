@@ -72,13 +72,13 @@ class LoginFragment : Fragment(){
                     activityCallback?.finishedLogin(accessToken!!)
                 } else {
                     var toastText = "Failed to login"
-                    Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                    Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(error: GraphError) {
                 var toastText = "Failed to login, $error"
-                Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
             }
         })
     }

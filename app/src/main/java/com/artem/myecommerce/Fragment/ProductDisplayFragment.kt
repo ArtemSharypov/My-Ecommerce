@@ -112,10 +112,15 @@ class ProductDisplayFragment : Fragment() {
 
     //Creates a new Checkout and adds the ProductItem to it
     private fun addToNewCheckout(quantity: Int) {
+        var attributesList = Arrays.asList(
+                Storefront.AttributeInput("mainImageURL", currentProduct.mainImageURL),
+                Storefront.AttributeInput("price", currentProduct.price.toString()))
+
+        var newLineItem = Storefront.CheckoutLineItemInput(quantity, ID(currentProduct.variantId))
+        newLineItem.customAttributes = attributesList
+
         var cartInput = Storefront.CheckoutCreateInput()
-                .setLineItemsInput(Input.value(Arrays.asList(
-                        Storefront.CheckoutLineItemInput(quantity, ID(currentProduct.variantId))
-                )))
+                .setLineItemsInput(Input.value(Arrays.asList(newLineItem)))
 
         var query = Storefront.mutation{
             it.checkoutCreate(cartInput, {
@@ -138,20 +143,25 @@ class ProductDisplayFragment : Fragment() {
                     cartDetailCallback.setCheckout(checkout!!)
                 } else {
                     var toastText = "Failed to login"
-                    Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                    Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(error: GraphError) {
                 var toastText = "Failed to create a Cart, $error"
-                Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
             }
         })
     }
 
     //Adds the ProductItem to the already existing Checkout
     private fun addToExistingCheckout(checkoutId: ID, quantity: Int) {
+        var attributesList = Arrays.asList(
+                Storefront.AttributeInput("mainImageURL", currentProduct.mainImageURL),
+                Storefront.AttributeInput("price", currentProduct.price.toString()))
+
         var cartInput = Storefront.CheckoutLineItemInput(quantity, ID(currentProduct.variantId))
+        cartInput.customAttributes = attributesList
 
         var query = Storefront.mutation{
             it.checkoutLineItemsAdd(Arrays.asList(cartInput), checkoutId) {
@@ -168,17 +178,20 @@ class ProductDisplayFragment : Fragment() {
         graphClient.mutateGraph(query).enqueue(object : GraphCall.Callback<Storefront.Mutation> {
             override fun onResponse(response: GraphResponse<Storefront.Mutation>) {
                 if(response.data()?.checkoutCreate?.userErrors?.isEmpty()!!) {
+                    val checkout = response.data()?.checkoutCreate?.checkout
+                    cartDetailCallback.setCheckout(checkout!!)
+
                     var toastText = "Added the item to your Cart"
-                    Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                    Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
                 } else {
                     var toastText = "Failed to add the Product to your Cart"
-                    Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                    Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(error: GraphError) {
                 var toastText = "Failed to add the Product to your Cart, $error"
-                Toast.makeText(context, toastText, Toast.LENGTH_LONG)
+                Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
             }
         })
     }

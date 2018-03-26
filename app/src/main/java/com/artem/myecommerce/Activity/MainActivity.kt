@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), ReplaceFragmentInterface, SignUpAndLog
         return checkout
     }
 
-    override fun setCheckout(checkout: Storefront.Checkout) {
+    override fun setCheckout(checkout: Storefront.Checkout?) {
         this.checkout = checkout
     }
 
